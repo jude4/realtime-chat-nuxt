@@ -5,15 +5,10 @@ import { useRuntimeConfig, useCookie } from '#app'
 // Make Pusher available globally
 window.Pusher = Pusher
 
-export default defineNuxtPlugin(async(nuxtApp) => {
+export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
+  const token = useCookie('auth.token')
 
-  // const token = (useCookie('auth.token').value)
-
-  // console.log(useCookie('XSRF-TOKEN').value)
-  const { data } = await useFetch('/sanctum/csrf-cookie'); // Laravel Example
-  const xsrfToken = useCookie('XSRF-TOKEN');
-  console.log('Fetched XSRF-TOKEN:', xsrfToken.value);
 
   window.Echo = new Echo({
     broadcaster: 'reverb',
@@ -21,17 +16,17 @@ export default defineNuxtPlugin(async(nuxtApp) => {
     wsHost: config.public.REVERB_HOST || 'localhost',
     wsPort: config.public.REVERB_PORT || 8080,
     forceTLS: false,
+    debug: true,
     enabledTransports: ['ws', 'wss'],
     authEndpoint: `${config.public.baseUrl}/broadcasting/auth`,
     auth: {
-      headers: {
-        'X-XSRF-TOKEN': useCookie('XSRF-TOKEN').value,
-        // 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        // Autorization: `Bearer ${token}`
+      headers: { 
+        Authorization: `Bearer ${token.value}`,
+        Accept: 'application/json'
       }
     }
   })
 
   nuxtApp.provide('echo', window.Echo)
 })
+

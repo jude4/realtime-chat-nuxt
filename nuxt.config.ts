@@ -6,6 +6,10 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth'
   ],
   css: ['~/assets/css/main.css'],
+  devServer: {
+    host: 'reverb-app.test',
+    port: 3000,
+  },
   auth: {
     isEnabled: true,
     disableServerSideAuth: false,
@@ -13,7 +17,7 @@ export default defineNuxtConfig({
     //   baseURL: 'http://reverb-app/api'
     // },
     // originEnvKey: 'AUTH_ORIGIN',
-    baseURL: 'http://reverb-app.test/api',
+    baseURL: 'http://api-reverb-app.test/api',
     provider: {
       type: 'local',
       endpoints: {
@@ -28,16 +32,8 @@ export default defineNuxtConfig({
         cookieName: 'auth.token',
         headerName: 'Authorization',
         maxAgeInSeconds: 1800,
-        // sameSiteAttribute: 'lax',
-        // cookieDomain: 'sidebase.io',
-        // secureCookieAttribute: false,
-        // httpOnlyCookieAttribute: false,
       },
     },
-    // sessionRefresh: {
-    //   enablePeriodically: true,
-    //   enableOnWindowFocus: true,
-    // }
   },
   postcss: {
     plugins: {
@@ -50,8 +46,8 @@ export default defineNuxtConfig({
     apiSecret: '123',
     // Keys within public are also exposed client-side
     public: {
-      baseUrl: 'http://reverb-app.test/api',
-      apiBase: 'http://reverb-app.test',
+      baseUrl: 'http://api-reverb-app.test/api',
+      apiBase: 'http://api-reverb-app.test',
       REVERB_APP_KEY: process.env.REVERB_APP_KEY,
       REVERB_HOST: process.env.REVERB_HOST,
       REVERB_PORT: process.env.REVERB_PORT,

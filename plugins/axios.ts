@@ -22,8 +22,9 @@ export class AxiosService {
     this.axios.interceptors.request.use(
       (config) => {
         const token = useCookie('token').value
+  
         if (token && config.headers) {
-          config.headers.Authorization = `Bearer ${token}`
+          config.headers.Authorization = `${token}`
         }
         return config
       },
